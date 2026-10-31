@@ -20,11 +20,17 @@ public class WaitUtils {
 
     // Returns the first matching element that is actually displayed (skips hidden duplicates)
     public WebElement visibleAny(By locator) {
-        return wait.until((Function<WebDriver, WebElement>) d ->
-                d.findElements(locator).stream()
-                        .filter(WebElement::isDisplayed)
-                        .findFirst()
-                        .orElse(null));
+        return visibleAny(locator, 20);
+    }
+
+    // Same, with a custom timeout (used when a person may need to solve a CAPTCHA by hand)
+    public WebElement visibleAny(By locator, int seconds) {
+        return new WebDriverWait(driver, Duration.ofSeconds(seconds)).until(
+                (Function<WebDriver, WebElement>) d ->
+                        d.findElements(locator).stream()
+                                .filter(WebElement::isDisplayed)
+                                .findFirst()
+                                .orElse(null));
     }
 
     public WebElement clickable(By locator) {

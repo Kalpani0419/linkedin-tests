@@ -32,7 +32,10 @@ public class LoginPage {
     }
 
     public boolean isErrorDisplayed() {
-        return wait.visibleAny(errorMessage).isDisplayed();
+        // Normally appears within a second. Allow 120 s in case LinkedIn shows a CAPTCHA
+        // that a person must solve by hand (the test never bypasses it).
+        System.out.println(">>> Waiting up to 120s for the error message. If a CAPTCHA appears, solve it manually.");
+        return wait.visibleAny(errorMessage, 120).isDisplayed();
     }
 
     public String getErrorText() {
